@@ -295,50 +295,52 @@ function useCharacterStylesPopup(editor: LexicalEditor): JSX.Element | null {
 
   const updatePopup = useCallback(() => {
     editor.getEditorState().read(() => {
-      const selection = $getSelection();
-      const nativeSelection = window.getSelection();
-      const rootElement = editor.getRootElement();
+      if (editor.isEditable()) {
+        const selection = $getSelection();
+        const nativeSelection = window.getSelection();
+        const rootElement = editor.getRootElement();
 
-      if (
-        nativeSelection !== null &&
-        (!$isRangeSelection(selection) ||
-          rootElement === null ||
-          !rootElement.contains(nativeSelection.anchorNode))
-      ) {
-        setIsText(false);
-        return;
-      }
+        if (
+          nativeSelection !== null &&
+          (!$isRangeSelection(selection) ||
+            rootElement === null ||
+            !rootElement.contains(nativeSelection.anchorNode))
+        ) {
+          setIsText(false);
+          return;
+        }
 
-      if (!$isRangeSelection(selection)) {
-        return;
-      }
+        if (!$isRangeSelection(selection)) {
+          return;
+        }
 
-      const node = getSelectedNode(selection);
+        const node = getSelectedNode(selection);
 
-      // Update text format
-      setIsBold(selection.hasFormat('bold'));
-      setIsItalic(selection.hasFormat('italic'));
-      setIsUnderline(selection.hasFormat('underline'));
-      setIsStrikethrough(selection.hasFormat('strikethrough'));
-      setIsSubscript(selection.hasFormat('subscript'));
-      setIsSuperscript(selection.hasFormat('superscript'));
-      setIsCode(selection.hasFormat('code'));
+        // Update text format
+        setIsBold(selection.hasFormat('bold'));
+        setIsItalic(selection.hasFormat('italic'));
+        setIsUnderline(selection.hasFormat('underline'));
+        setIsStrikethrough(selection.hasFormat('strikethrough'));
+        setIsSubscript(selection.hasFormat('subscript'));
+        setIsSuperscript(selection.hasFormat('superscript'));
+        setIsCode(selection.hasFormat('code'));
 
-      // Update links
-      const parent = node.getParent();
-      if ($isLinkNode(parent) || $isLinkNode(node)) {
-        setIsLink(true);
-      } else {
-        setIsLink(false);
-      }
+        // Update links
+        const parent = node.getParent();
+        if ($isLinkNode(parent) || $isLinkNode(node)) {
+          setIsLink(true);
+        } else {
+          setIsLink(false);
+        }
 
-      if (
-        !$isCodeHighlightNode(selection.anchor.getNode()) &&
-        selection.getTextContent() !== ''
-      ) {
-        setIsText($isTextNode(node));
-      } else {
-        setIsText(false);
+        if (
+          !$isCodeHighlightNode(selection.anchor.getNode()) &&
+          selection.getTextContent() !== ''
+        ) {
+          setIsText($isTextNode(node));
+        } else {
+          setIsText(false);
+        }
       }
     });
   }, [editor]);
