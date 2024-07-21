@@ -84,7 +84,7 @@ const Editor = ({
     editor.setEditable(isEditable);
 
     if (locale) i18n.changeLanguage(locale);
-  }, []);
+  }, [isEditable]);
 
   return (
     <EditorContext.Provider
