@@ -121,7 +121,7 @@ const Editor = ({
           <ListMaxIndentLevelPlugin maxDepth={listMaxIndent} />
           <LinkPlugin />
           <ClickableLinkPlugin />
-          <CharacterStylesPopupPlugin />
+          {isEditable && <CharacterStylesPopupPlugin />}
           <TabFocusPlugin />
         </>
 
