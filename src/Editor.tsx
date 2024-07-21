@@ -70,7 +70,7 @@ const Editor = ({
 }: IEditorProps) => {
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
-  const [_isEditable, _isEditableSetter] = useState(isEditable);
+  const [_isEditable, setIsEditable] = useState(isEditable);
   const editorStateRef = useRef(null);
   const { historyState } = useSharedHistoryContext();
   const {
@@ -82,7 +82,9 @@ const Editor = ({
 
   useEffect(() => {
     editor.setEditable(isEditable);
-    _isEditableSetter(isEditable);
+
+    setIsEditable(isEditable);
+
     if (locale) i18n.changeLanguage(locale);
   }, [isEditable]);
 
